@@ -1,5 +1,5 @@
-﻿# Autómata de Pila por vaciado de pila para reconocer el lenguaje 
-#  L = {a^nb^n | n > 0}
+# Autómata de Pila por vaciado de pila para reconocer el lenguaje 
+# L = {a^nb^n | n > 0}
 # Represento el epsilon con un .
 q1 q2
 a b

@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
 	else {
 		try {
 			Automaton testAutomaton(argv[1]);
+			testAutomaton.write(std::cout);
 		} catch(std::runtime_error &e) {
 			std::cerr << e.what();
 			return(2);

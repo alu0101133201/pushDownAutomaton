@@ -11,13 +11,15 @@
 #include <iostream>
 #include <stack>
 #include <set>
+#include <vector>
 #include <string>
 #include <fstream>
 #include <string.h>
+#include <sstream>
 
 class Automaton {
   private:
-    std::set<int> states;// Cjto de estados
+    std::set<std::string> states;// Cjto de estados
     std::set<char>  automatonAlphabet;  // Alfabeto del autómata
     int initialState; // Estado inicial
     // Función de transición
