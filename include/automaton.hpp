@@ -14,18 +14,21 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <string.h>
-#include <sstream>
+
+#include "transitionFunction.hpp"
+
+void vectorToSet(std::vector<std::string> &initialVector, std::set<std::string> &destinationSet);
+void storeLine(std::string &line, std::vector<std::string> &words, std::set<std::string> &setToStore);
 
 class Automaton {
   private:
     std::set<std::string> states;// Cjto de estados
     std::set<std::string>  automatonAlphabet;  // Alfabeto del autómata
-    std::string initialState; // Estado inicial
-    // Función de transición
-    std::set<int> acceptanceStates; // Cjto de estados de aceptación
+    std::string initialState;  // Estado inicial
+    TransitionFunction transitionFunction;  // Función de transición
+    std::set<int> acceptanceStates;  // Cjto de estados de aceptación
     std::set<std::string> stackAlphabet;  // Alfabeto de la pila
-    std::string initialStackSymbol; // Símbolo inicial de la pila
+    std::string initialStackSymbol;  // Símbolo inicial de la pila
 
   public:
     Automaton(char* automatonFile);

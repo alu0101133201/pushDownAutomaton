@@ -8,17 +8,6 @@
 
 #include "automaton.hpp"
 
-// Función auxiliar para dividir una cadena por los espacios
-void getWords(std::string initialString, std::vector<std::string> &words) {
-  std::istringstream ourString(initialString);
-  do {
-    std::string word;
-    ourString >> word;
-    if (word.length() > 0)
-      words.push_back(word);
-  } while(ourString);
-}
-
 void vectorToSet(std::vector<std::string> &initialVector, std::set<std::string> &destinationSet) {
   for (size_t i = 0; i < initialVector.size(); i++) {
     destinationSet.insert(initialVector[i]);
@@ -52,6 +41,9 @@ Automaton::Automaton(char* automatonFile) {
     initialState = line;
     getline(file, line);  // Leemos símbolo inicial
     initialStackSymbol = line;
+
+    transitionFunction.readFromFile(file);
+
   } else {
     std::string s("ERROR EN TIEMPO DE EJECUCIÓN - No se pudo abrir el fichero\n");
     throw std::runtime_error(s);
@@ -75,5 +67,7 @@ std::ostream& Automaton::write(std::ostream& os) {
   os << "\n";
   os << ". Estado inicial:\n  " << initialState << "\n";
   os << ". Símbolo inicial de la pila:\n  " << initialStackSymbol << "\n";
+  os << ". Transiciones: \n";
+  transitionFunction.write(os);
   return os;
 }
