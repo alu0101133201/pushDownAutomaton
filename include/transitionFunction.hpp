@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <set>
 
 #include "transition.hpp"
 
@@ -23,6 +24,7 @@ class TransitionFunction {
     TransitionFunction();
     ~TransitionFunction();
 
+    bool check(std::set<std::string> states, std::set<std::string> automatonAlphabet, std::set<std::string> stackAlphabet);
     void readFromFile(std::ifstream &file);
     std::ostream& write(std::ostream& os);
 };

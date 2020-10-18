@@ -13,6 +13,7 @@
 #include <vector>
 #include <string.h>
 #include <sstream>
+#include <set>
 
 void getWords(std::string initialString, std::vector<std::string> &words);
 
@@ -22,18 +23,20 @@ class Transition {
     std::string consumeSymbol;
     std::string consumeStackSymbol;
     std::string nextState;
-    std::string insertStackSymbol;
+    std::vector<std::string> insertStackSymbol;
 
   public:
     Transition(std::string iniSt, std::string consSymb, std::string consStackSymb,
-        std::string nextSt, std::string insertStackSymb);
+        std::string nextSt, std::vector<std::string> insertStackSymb);
     ~Transition();
 
     std::string getInitialState(void);
     std::string getConsumeSymbol(void);
     std::string getConsumeStackSymbol(void);
     std::string getNextState(void);
-    std::string getInsterStackSymbol(void);
+    std::vector<std::string> getInsertStackSymbol(void);
+
+    bool checkAllStackSymb(std::set<std::string> alphabet);
 
     std::ostream& write(std::ostream &os);
 };

@@ -20,7 +20,7 @@ void getWords(std::string initialString, std::vector<std::string> &words) {
 }
 
 Transition::Transition(std::string iniSt, std::string consSymb, std::string consStackSymb,
-        std::string nextSt, std::string insertStackSymb) :
+        std::string nextSt, std::vector<std::string> insertStackSymb) :
     initialState(iniSt), 
     consumeSymbol(consSymb), 
     consumeStackSymbol(consStackSymb), 
@@ -41,8 +41,17 @@ std::string Transition::getConsumeStackSymbol(void) {
 std::string Transition::getNextState(void) {
   return nextState;
 }
-std::string Transition::getInsterStackSymbol(void) {
+std::vector<std::string> Transition::getInsertStackSymbol(void) {
   return insertStackSymbol;
+}
+
+bool Transition::checkAllStackSymb(std::set<std::string> alphabet) {
+  for (size_t i = 0; i < insertStackSymbol.size(); i++) {
+    if (insertStackSymbol[i] != "." && 
+      alphabet.find(insertStackSymbol[i]) == alphabet.end())
+      return false;
+  }
+  return true;
 }
 
 std::ostream& Transition::write(std::ostream &os) {
@@ -50,6 +59,9 @@ std::ostream& Transition::write(std::ostream &os) {
     os << consumeSymbol << ", ";
     os << consumeStackSymbol << ", ";
     os << nextState << ", ";
-    os << insertStackSymbol << "\n";
+    for (size_t i = 0; i < insertStackSymbol.size(); i++) {
+      os << insertStackSymbol[i] << " ";
+    }
+    os << "\n";
   return os;
 }

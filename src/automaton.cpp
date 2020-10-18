@@ -41,8 +41,12 @@ Automaton::Automaton(char* automatonFile) {
     initialState = line;
     getline(file, line);  // Leemos símbolo inicial
     initialStackSymbol = line;
+    transitionFunction.readFromFile(file);  // Construimos la función de transición
 
-    transitionFunction.readFromFile(file);
+    if (!checkAutomaton()) {  // Comprobamos que el autómata cumpla la definición formal
+      std::string s("ERROR EN TIEMPO DE EJECUCIÓN - El autómata no cumple con las restricciones formales\n");
+      throw std::runtime_error(s);
+    }
 
   } else {
     std::string s("ERROR EN TIEMPO DE EJECUCIÓN - No se pudo abrir el fichero\n");
@@ -53,6 +57,13 @@ Automaton::Automaton(char* automatonFile) {
 // Destructor del autómata de pila
 Automaton::~Automaton() {}
 
+bool Automaton::checkAutomaton(void) {
+  if (states.find(initialState) == states.end())
+    return false;
+  if (stackAlphabet.find(initialStackSymbol) == stackAlphabet.end())
+    return false;
+  return transitionFunction.check(states, automatonAlphabet, stackAlphabet);
+}
 
 std::ostream& Automaton::write(std::ostream& os) {
   os << " - - AUTÓMATA DE PILA - -\n· Conjunto de estados:\n  ";
