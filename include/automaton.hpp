@@ -20,12 +20,12 @@
 class Automaton {
   private:
     std::set<std::string> states;// Cjto de estados
-    std::set<char>  automatonAlphabet;  // Alfabeto del autómata
-    int initialState; // Estado inicial
+    std::set<std::string>  automatonAlphabet;  // Alfabeto del autómata
+    std::string initialState; // Estado inicial
     // Función de transición
     std::set<int> acceptanceStates; // Cjto de estados de aceptación
-    std::set<char> stackAlphabet;  // Alfabeto de la pila
-    char initialStackSymbol; // Símbolo inicial de la pila
+    std::set<std::string> stackAlphabet;  // Alfabeto de la pila
+    std::string initialStackSymbol; // Símbolo inicial de la pila
 
   public:
     Automaton(char* automatonFile);

@@ -25,6 +25,12 @@ void vectorToSet(std::vector<std::string> &initialVector, std::set<std::string> 
   }
 }
 
+void storeLine(std::string &line, std::vector<std::string> &words, std::set<std::string> &setToStore) {
+    getWords(line, words); // Leemos el alfabeto de entrada de la cadena
+    vectorToSet(words, setToStore);
+    words.clear();
+}
+
 // Constructor del autómata de pila
 Automaton::Automaton(char* automatonFile) {
   std::string route = "./examples/";
@@ -37,9 +43,15 @@ Automaton::Automaton(char* automatonFile) {
     while (getline(file, line)) {   // Eliminamos los comentarios
       if (line[0] != '#') break;
     }
-    getWords(line, words);  // Leemos el cjto de estados del autómata
-    vectorToSet(words, states);
-
+    storeLine(line, words, states);  // Leemos el cjto de estados del autómata
+    getline(file, line);
+    storeLine(line, words, automatonAlphabet); // Leemos el alfabeto de entrada de la cadena
+    getline(file, line);
+    storeLine(line, words, stackAlphabet); // Leemos el alfabeto de entrada de la cadena
+    getline(file, line);  // Leemos el estado inicial
+    initialState = line;
+    getline(file, line);  // Leemos símbolo inicial
+    initialStackSymbol = line;
   } else {
     std::string s("ERROR EN TIEMPO DE EJECUCIÓN - No se pudo abrir el fichero\n");
     throw std::runtime_error(s);
@@ -51,10 +63,17 @@ Automaton::~Automaton() {}
 
 
 std::ostream& Automaton::write(std::ostream& os) {
-  os << " - - AUTÓMATA DE PILA - -\n";
-  os << "· Conjunto de estados:\n  ";
+  os << " - - AUTÓMATA DE PILA - -\n· Conjunto de estados:\n  ";
   for (std::set<std::string>::iterator it = states.begin(); it != states.end(); ++it)
     os << *it << " ";
+  os << "\n. Alfabeto de la cadena de entrada:\n  ";
+  for (std::set<std::string>::iterator it = automatonAlphabet.begin(); it != automatonAlphabet.end(); ++it)
+    os << *it << " ";
+  os << "\n. Alfabeto de la pila:\n  ";
+  for (std::set<std::string>::iterator it = stackAlphabet.begin(); it != stackAlphabet.end(); ++it)
+    os << *it << " ";
   os << "\n";
+  os << ". Estado inicial:\n  " << initialState << "\n";
+  os << ". Símbolo inicial de la pila:\n  " << initialStackSymbol << "\n";
   return os;
 }
