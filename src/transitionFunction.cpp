@@ -32,7 +32,8 @@ bool TransitionFunction::check(std::set<std::string> states, std::set<std::strin
     std::set<std::string> stackAlphabet) {
   for (size_t i = 0; i < transitions.size(); i++) {
     if ((states.find(transitions[i].getInitialState()) == states.end()) ||
-        (automatonAlphabet.find(transitions[i].getConsumeSymbol()) == automatonAlphabet.end()) ||
+        (automatonAlphabet.find(transitions[i].getConsumeSymbol()) == automatonAlphabet.end() 
+            && transitions[i].getConsumeSymbol() != ".") ||
         (stackAlphabet.find(transitions[i].getConsumeStackSymbol()) == stackAlphabet.end()) ||
         (states.find(transitions[i].getNextState()) == states.end()) ||
         !(transitions[i].checkAllStackSymb(stackAlphabet))){

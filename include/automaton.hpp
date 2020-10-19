@@ -34,6 +34,7 @@ class Automaton {
     Automaton(char* automatonFile);
     ~Automaton();
 
+    bool test(std::string);
     bool checkAutomaton(void);
     std::ostream& write(std::ostream& os);
 };

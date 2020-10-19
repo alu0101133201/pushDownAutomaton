@@ -9,6 +9,34 @@
 #include "automaton.hpp"
 #include "transition.hpp"
 
+void keyboardMode(Automaton myAutomaton) {
+	std::string keyboardString;
+do {
+		std::cout << "\nIntroduzca cadena a reconocer por el autómata (X para salir)\n >> ";
+		std::cin >> keyboardString;
+		if (keyboardString != "X")
+			myAutomaton.test(keyboardString);
+	} while(keyboardString != "X");
+}
+
+void fileMode(Automaton myAutomaton) {
+	std::string fileName;
+	std::cout << "\nIntroduzca nombre del fichero\n >> ";
+	std::cin >> fileName;
+
+  std::string line;
+	std::ifstream file(fileName);
+
+	if (file.is_open()) {
+    while (getline(file, line)) {
+      myAutomaton.test(line);
+    }
+	} else {
+		std::string s("ERROR EN TIEMPO DE EJECUCIÓN - No se pudo abrir el fichero\n");
+    throw std::runtime_error(s);
+	}
+}
+
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
 		std::cerr << "Debe introducir el nombre del fichero que contiene al autómata\n";
@@ -16,8 +44,17 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		try {
+			int option;
 			Automaton testAutomaton(argv[1]);
+
 			testAutomaton.write(std::cout);
+			std::cout << "\n\nSeleccione método para introducir las cadenas:\n 1.- Teclado\n 2.- Fichero\n >> ";
+			std::cin >> option;
+			if (option == 1) {
+				keyboardMode(testAutomaton);
+			} else {
+				fileMode(testAutomaton);
+			}
 		} catch(std::runtime_error &e) {
 			std::cerr << e.what();
 			return(2);

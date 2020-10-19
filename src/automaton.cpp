@@ -57,6 +57,13 @@ Automaton::Automaton(char* automatonFile) {
 // Destructor del autómata de pila
 Automaton::~Automaton() {}
 
+
+bool Automaton::test(std::string testString) {
+  std::cout << "testing " << testString << "\n";
+}
+
+
+
 bool Automaton::checkAutomaton(void) {
   if (states.find(initialState) == states.end())
     return false;
@@ -66,7 +73,7 @@ bool Automaton::checkAutomaton(void) {
 }
 
 std::ostream& Automaton::write(std::ostream& os) {
-  os << " - - AUTÓMATA DE PILA - -\n· Conjunto de estados:\n  ";
+  os << " - - AUTÓMATA CARGADO - -\n· Conjunto de estados:\n  ";
   for (std::set<std::string>::iterator it = states.begin(); it != states.end(); ++it)
     os << *it << " ";
   os << "\n. Alfabeto de la cadena de entrada:\n  ";
@@ -75,8 +82,7 @@ std::ostream& Automaton::write(std::ostream& os) {
   os << "\n. Alfabeto de la pila:\n  ";
   for (std::set<std::string>::iterator it = stackAlphabet.begin(); it != stackAlphabet.end(); ++it)
     os << *it << " ";
-  os << "\n";
-  os << ". Estado inicial:\n  " << initialState << "\n";
+  os << "\n. Estado inicial:\n  " << initialState << "\n";
   os << ". Símbolo inicial de la pila:\n  " << initialStackSymbol << "\n";
   os << ". Transiciones: \n";
   transitionFunction.write(os);
