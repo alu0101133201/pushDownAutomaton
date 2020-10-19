@@ -60,9 +60,9 @@ Automaton::~Automaton() {}
 
 bool Automaton::test(std::string testString) {
   std::cout << "testing " << testString << "\n";
+
+  return true;
 }
-
-
 
 bool Automaton::checkAutomaton(void) {
   if (states.find(initialState) == states.end())

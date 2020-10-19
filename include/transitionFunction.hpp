@@ -24,6 +24,9 @@ class TransitionFunction {
     TransitionFunction();
     ~TransitionFunction();
 
+    std::vector<Transition> getFunctionOutput(std::string initialState, 
+        std::string stringSymbol, std::string stackSymbol);
+
     bool check(std::set<std::string> states, std::set<std::string> automatonAlphabet, std::set<std::string> stackAlphabet);
     void readFromFile(std::ifstream &file);
     std::ostream& write(std::ostream& os);

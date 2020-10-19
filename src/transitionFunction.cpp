@@ -12,6 +12,19 @@ TransitionFunction::TransitionFunction(void) {}
 
 TransitionFunction::~TransitionFunction() {}
 
+std::vector<Transition> TransitionFunction::getFunctionOutput(std::string initialState, 
+    std::string stringSymbol, std::string stackSymbol) {
+  std::vector<Transition> validTransitions;
+  for (size_t i = 0; i < transitions.size(); i++) {
+    if ((transitions[i].getInitialState() == initialState) &&
+        (transitions[i].getConsumeSymbol() == stringSymbol) &&
+        (transitions[i].getConsumeStackSymbol() == stackSymbol)) {
+      validTransitions.push_back(transitions[i]);
+    }
+  }
+  return validTransitions;
+}
+
 void TransitionFunction::readFromFile(std::ifstream &file) {
   std::string line;
   std::vector<std::string> words;
@@ -29,7 +42,7 @@ void TransitionFunction::readFromFile(std::ifstream &file) {
 }
 
 bool TransitionFunction::check(std::set<std::string> states, std::set<std::string> automatonAlphabet, 
-    std::set<std::string> stackAlphabet) {
+  std::set<std::string> stackAlphabet) {
   for (size_t i = 0; i < transitions.size(); i++) {
     if ((states.find(transitions[i].getInitialState()) == states.end()) ||
         (automatonAlphabet.find(transitions[i].getConsumeSymbol()) == automatonAlphabet.end() 
@@ -42,6 +55,7 @@ bool TransitionFunction::check(std::set<std::string> states, std::set<std::strin
   }
   return true;
 }
+
 std::ostream& TransitionFunction::write(std::ostream& os) {
   for (size_t i = 0; i < transitions.size(); i++) {
     transitions[i].write(os);
