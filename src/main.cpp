@@ -14,8 +14,13 @@ void keyboardMode(Automaton myAutomaton) {
 do {
 		std::cout << "\nIntroduzca cadena a reconocer por el autómata (X para salir)\n >> ";
 		std::cin >> keyboardString;
-		if (keyboardString != "X")
-			myAutomaton.test(keyboardString);
+		try {
+			if (keyboardString != "X")
+				if (!myAutomaton.test(keyboardString))
+					std::cout << "Cadena no aceptada\n";
+			} catch(bool &e) {
+			std::cout << "Cadena aceptada\n";
+		}
 	} while(keyboardString != "X");
 }
 
@@ -29,9 +34,13 @@ void fileMode(Automaton myAutomaton) {
 
 	if (file.is_open()) {
     while (getline(file, line)) {
-      if (!myAutomaton.test(line))
-				std::cout << "Cadena no aceptada\n";
-    	}
+			try {
+				if (!myAutomaton.test(line))
+					std::cout << "Cadena no aceptada\n";
+			} catch(bool &e) {
+			std::cout << "Cadena aceptada\n";
+			}
+		}
 	} else {
 		std::string s("ERROR EN TIEMPO DE EJECUCIÓN - No se pudo abrir el fichero\n");
     throw std::runtime_error(s);

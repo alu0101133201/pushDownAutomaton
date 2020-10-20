@@ -1,3 +1,7 @@
 Manzana
 Canario
 Alicante
+000000
+11000011
+casa
+000000000000
