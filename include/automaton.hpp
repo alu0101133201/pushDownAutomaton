@@ -35,6 +35,7 @@ class Automaton {
     ~Automaton();
 
     bool test(std::string);
+    bool recursiveStep(std::string, std::string, std::stack<std::string>);
     bool checkAutomaton(void);
     std::ostream& write(std::ostream& os);
 };

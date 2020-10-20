@@ -17,7 +17,7 @@ std::vector<Transition> TransitionFunction::getFunctionOutput(std::string initia
   std::vector<Transition> validTransitions;
   for (size_t i = 0; i < transitions.size(); i++) {
     if ((transitions[i].getInitialState() == initialState) &&
-        (transitions[i].getConsumeSymbol() == stringSymbol) &&
+        ((transitions[i].getConsumeSymbol() == stringSymbol) || (transitions[i].getConsumeSymbol() == ".")) &&
         (transitions[i].getConsumeStackSymbol() == stackSymbol)) {
       validTransitions.push_back(transitions[i]);
     }

@@ -29,8 +29,9 @@ void fileMode(Automaton myAutomaton) {
 
 	if (file.is_open()) {
     while (getline(file, line)) {
-      myAutomaton.test(line);
-    }
+      if (!myAutomaton.test(line))
+				std::cout << "Cadena no aceptada\n";
+    	}
 	} else {
 		std::string s("ERROR EN TIEMPO DE EJECUCIÓN - No se pudo abrir el fichero\n");
     throw std::runtime_error(s);

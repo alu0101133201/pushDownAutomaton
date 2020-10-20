@@ -14,6 +14,13 @@ void vectorToSet(std::vector<std::string> &initialVector, std::set<std::string> 
   }
 }
 
+void vectorToStack(std::stack<std::string> &destinationStack, std::vector<std::string> &sourceVector) {
+  for (size_t i = 0; i < sourceVector.size(); i++) {
+    if (sourceVector[i] != ".")
+      destinationStack.push(sourceVector[i]);
+  }
+}
+
 void storeLine(std::string &line, std::vector<std::string> &words, std::set<std::string> &setToStore) {
     getWords(line, words); // Leemos el alfabeto de entrada de la cadena
     vectorToSet(words, setToStore);
@@ -59,9 +66,40 @@ Automaton::~Automaton() {}
 
 
 bool Automaton::test(std::string testString) {
-  std::cout << "testing " << testString << "\n";
+  std::string currentState = initialState;
+  std::stack<std::string> currentStack;
+  currentStack.push(initialStackSymbol);
 
-  return true;
+  return recursiveStep(currentState, testString, currentStack);
+}
+
+bool Automaton::recursiveStep(std::string currentState, std::string testString,
+    std::stack<std::string> currentStack) {
+  std::cout << "Cadena por analizar: " << testString << "\n";
+  if ((currentStack.empty()) && (testString.size() == 0)) {
+    std::cout << "ACEPTADA\n";
+    return true;
+  }
+  std::string currentSymbol = "";
+  currentSymbol += testString[0];
+  std::vector<Transition> possibleTransitions = transitionFunction.getFunctionOutput(currentState, 
+      currentSymbol, currentStack.top()); // Obtenemos la siguiente transición
+  if (possibleTransitions.size() == 0) 
+    return false;
+  
+  currentStack.pop();  // Consumimos elemento top de la pila
+
+  for(size_t i = 0; i < possibleTransitions.size(); i++) {
+    if (possibleTransitions[i].getConsumeSymbol() != ".")
+      testString.erase(testString.begin()); // Consumimos el elemento si no es una epsilon
+    std::stack<std::string> iterationStack = currentStack;  // Preparamos una pila auxiliar para este camino
+    std::vector<std::string> symbolsToAdd = possibleTransitions[i].getInsertStackSymbol();
+    symbolsToAdd.reserve(0); 
+    vectorToStack(iterationStack, symbolsToAdd);  // Añadimos a la pila los elementos de la transición
+
+    recursiveStep(possibleTransitions[i].getNextState(), testString, iterationStack);
+  }
+  return false;
 }
 
 bool Automaton::checkAutomaton(void) {
