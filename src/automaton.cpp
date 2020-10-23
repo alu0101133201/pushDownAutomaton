@@ -39,7 +39,10 @@ Automaton::Automaton(char* automatonFile) {
     while (getline(file, line)) {   // Eliminamos los comentarios
       if (line[0] != '#') break;
     }
-    storeLine(line, words, states);  // Leemos el cjto de estados del autómata
+    getWords(line, words);  // Leemos el cjto de estados del autómata
+    for (size_t i = 0; i < words.size(); i++) { 
+      allStates.push_back(*(new State(words[i])));
+    }
     getline(file, line);
     storeLine(line, words, automatonAlphabet); // Leemos el alfabeto de entrada de la cadena
     getline(file, line);
@@ -48,8 +51,24 @@ Automaton::Automaton(char* automatonFile) {
     initialState = line;
     getline(file, line);  // Leemos símbolo inicial
     initialStackSymbol = line;
-    transitionFunction.readFromFile(file);  // Construimos la función de transición
-
+    while (getline(file, line)) {   // Leemos todas las transiciones
+      getWords(line, words);
+      std::vector<std::string> multipleStackSymb;
+      for (size_t i = 4; i < words.size(); i++) { // Almaceno los símbolos a introducir en la pila
+        multipleStackSymb.push_back(words[i]);
+      }
+      if (!existState(words[0])) {  // compruebo que el estado de partida existe
+        std::string s("ERROR EN TIEMPO DE EJECUCIÓN - El autómata no cumple con las restricciones formales\n");
+        throw std::runtime_error(s);
+      }
+      for (size_t i = 0; i < allStates.size(); i++) { // Almaceno al transición en su estado correspondiente
+        if (allStates[i].getID() == words[0]) {
+          Transition aux(words[0], words[1], words[2], words[3], multipleStackSymb);
+          allStates[i].pushTransition(aux);
+        }
+          words.clear();
+      }
+    }
     if (!checkAutomaton()) {  // Comprobamos que el autómata cumpla la definición formal
       std::string s("ERROR EN TIEMPO DE EJECUCIÓN - El autómata no cumple con las restricciones formales\n");
       throw std::runtime_error(s);
@@ -83,9 +102,14 @@ bool Automaton::recursiveStep(std::string currentState, std::string testString,
   std::string currentSymbol = "";
   currentSymbol += testString[0];
 
-  if (!currentStack.empty())
-    possibleTransitions = transitionFunction.getFunctionOutput(currentState, 
-        currentSymbol, currentStack.top()); // Obtenemos la siguiente transición
+  if (!currentStack.empty()) {
+    for (size_t i = 0; i < allStates.size(); i++) {
+      if (allStates[i].getID() == currentState) {
+        possibleTransitions = allStates[i].getPossibleTransitions(currentSymbol, currentStack.top()); // Obtenemos la siguiente transición
+        break;
+      }
+    }
+  }
   if (possibleTransitions.size() == 0) 
     return false;
   currentStack.pop();  // Consumimos elemento top de la pila
@@ -103,17 +127,47 @@ bool Automaton::recursiveStep(std::string currentState, std::string testString,
 }
 
 bool Automaton::checkAutomaton(void) {
-  if (states.find(initialState) == states.end())
-    return false;
+  bool stateFlag = false;
+  for (size_t i = 0; i < allStates.size(); i++) {
+    if (allStates[i].getID() == initialState) 
+      stateFlag = true;
+  }
+  if (!stateFlag) return false;
   if (stackAlphabet.find(initialStackSymbol) == stackAlphabet.end())
     return false;
-  return transitionFunction.check(states, automatonAlphabet, stackAlphabet);
+  return checkTransitions();
+}
+
+bool Automaton::existState(std::string name) {
+  for (size_t i = 0; i < allStates.size(); i++) {
+    if (allStates[i].getID() == name)
+      return true;
+  }
+  return false;
+}
+
+bool Automaton::checkTransitions(void) {
+  for (size_t i = 0; i < allStates.size(); i++) {
+    std::vector<Transition> currentTransitions = allStates[i].getTransitions();
+    for (size_t j = 0; j < currentTransitions.size(); j++) {
+      if (!existState(currentTransitions[j].getNextState()) ||
+          (automatonAlphabet.find(currentTransitions[j].getConsumeSymbol()) == automatonAlphabet.end() 
+          && currentTransitions[j].getConsumeSymbol() != ".") ||
+          (stackAlphabet.find(currentTransitions[j].getConsumeStackSymbol()) == stackAlphabet.end()) ||
+          !(currentTransitions[j].checkAllStackSymb(stackAlphabet))){
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 std::ostream& Automaton::write(std::ostream& os) {
   os << " - - AUTÓMATA CARGADO - -\n· Conjunto de estados:\n  ";
-  for (std::set<std::string>::iterator it = states.begin(); it != states.end(); ++it)
-    os << *it << " ";
+  for(size_t i = 0; i < allStates.size(); i++)
+    os << allStates[i].getID() << " ";
+
+
   os << "\n. Alfabeto de la cadena de entrada:\n  ";
   for (std::set<std::string>::iterator it = automatonAlphabet.begin(); it != automatonAlphabet.end(); ++it)
     os << *it << " ";
@@ -123,6 +177,7 @@ std::ostream& Automaton::write(std::ostream& os) {
   os << "\n. Estado inicial:\n  " << initialState << "\n";
   os << ". Símbolo inicial de la pila:\n  " << initialStackSymbol << "\n";
   os << ". Transiciones: \n";
-  transitionFunction.write(os);
+  for (size_t i = 0; i < allStates.size(); i++) 
+    allStates[i].writeTransitions(os);
   return os;
 }

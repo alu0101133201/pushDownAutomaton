@@ -16,13 +16,15 @@
 #include <fstream>
 
 #include "transitionFunction.hpp"
+#include "transition.hpp"
+#include "state.hpp"
 
 void vectorToSet(std::vector<std::string> &initialVector, std::set<std::string> &destinationSet);
 void storeLine(std::string &line, std::vector<std::string> &words, std::set<std::string> &setToStore);
 
 class Automaton {
   private:
-    std::set<std::string> states;// Cjto de estados
+    std::vector<State> allStates; // Cjto de estados
     std::set<std::string>  automatonAlphabet;  // Alfabeto del autómata
     std::string initialState;  // Estado inicial
     TransitionFunction transitionFunction;  // Función de transición
@@ -34,9 +36,12 @@ class Automaton {
     Automaton(char* automatonFile);
     ~Automaton();
 
+    bool existState(std::string);
     bool test(std::string);
-    bool recursiveStep(std::string, std::string, std::stack<std::string>);
     bool checkAutomaton(void);
+    bool checkTransitions(void);
+
+    bool recursiveStep(std::string, std::string, std::stack<std::string>);
     std::ostream& write(std::ostream& os);
 };
 

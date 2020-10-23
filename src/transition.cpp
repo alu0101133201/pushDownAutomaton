@@ -29,19 +29,19 @@ Transition::Transition(std::string iniSt, std::string consSymb, std::string cons
 
 Transition::~Transition() {}
 
-std::string Transition::getInitialState(void) {
+std::string Transition::getInitialState(void) const {
   return initialState;
 }
-std::string Transition::getConsumeSymbol(void) {
+std::string Transition::getConsumeSymbol(void) const {
   return consumeSymbol;
 }
-std::string Transition::getConsumeStackSymbol(void) {
+std::string Transition::getConsumeStackSymbol(void) const {
   return consumeStackSymbol;
 }
-std::string Transition::getNextState(void) {
+std::string Transition::getNextState(void) const {
   return nextState;
 }
-std::vector<std::string> Transition::getInsertStackSymbol(void) {
+std::vector<std::string> Transition::getInsertStackSymbol(void) const {
   return insertStackSymbol;
 }
 

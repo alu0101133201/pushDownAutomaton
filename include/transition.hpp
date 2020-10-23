@@ -30,11 +30,11 @@ class Transition {
         std::string nextSt, std::vector<std::string> insertStackSymb);
     ~Transition();
 
-    std::string getInitialState(void);
-    std::string getConsumeSymbol(void);
-    std::string getConsumeStackSymbol(void);
-    std::string getNextState(void);
-    std::vector<std::string> getInsertStackSymbol(void);
+    std::string getInitialState(void) const;
+    std::string getConsumeSymbol(void) const;
+    std::string getConsumeStackSymbol(void) const;
+    std::string getNextState(void) const;
+    std::vector<std::string> getInsertStackSymbol(void) const;
 
     bool checkAllStackSymb(std::set<std::string> alphabet);
 
