@@ -17,9 +17,9 @@ do {
 		try {
 			if (keyboardString != "X")
 				if (!myAutomaton.test(keyboardString))
-					std::cout << "Cadena no aceptada\n";
+					std::cout << "La cadena: " << keyboardString << " no ha sido aceptada\n";
 			} catch(bool &e) {
-			std::cout << "Cadena aceptada\n";
+			std::cout << "La cadena: " << keyboardString << " ha sido aceptada\n";
 		}
 	} while(keyboardString != "X");
 }
@@ -36,9 +36,9 @@ void fileMode(Automaton myAutomaton) {
     while (getline(file, line)) {
 			try {
 				if (!myAutomaton.test(line))
-					std::cout << "Cadena no aceptada\n";
+					std::cout << "La cadena: " << line << " no ha sido aceptada\n";
 			} catch(bool &e) {
-			std::cout << "Cadena aceptada\n";
+			std::cout << "La cadena: " << line << " ha sido aceptada\n";
 			}
 		}
 	} else {
