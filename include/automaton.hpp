@@ -30,8 +30,7 @@ class Automaton {
     std::string initialState;  // Estado inicial
     std::set<int> acceptanceStates;  // Cjto de estados de aceptación
     std::set<std::string> stackAlphabet;  // Alfabeto de la pila
-    std::string initialStackSymbol;  // Símbolo inicial de la pila
-    
+    std::string initialStackSymbol;  // Símbolo inicial de la pila 
     bool trace; // Atributo que indica si estamos en modo traza o no
 
     /* Método que comprueba si el autómata está correctamente definido */
