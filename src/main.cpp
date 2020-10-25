@@ -55,8 +55,11 @@ int main(int argc, char *argv[]) {
 	else {
 		try {
 			int option;
-			Automaton testAutomaton(argv[1]);
-
+			int mode;
+			std::cout << "\nSeleccione modo de ejcición:\n 1.- Modo traza\n 2.- Modo normal\n";
+			std::cin >> mode;
+			
+			Automaton testAutomaton(argv[1], mode);
 			testAutomaton.write(std::cout);
 			std::cout << "\n\nSeleccione método para introducir las cadenas:\n 1.- Teclado\n 2.- Fichero\n >> ";
 			std::cin >> option;

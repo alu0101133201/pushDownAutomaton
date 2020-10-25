@@ -14,10 +14,12 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <iomanip>
 
 #include "transition.hpp"
 #include "state.hpp"
 
+// Funciones auxiliares
 void vectorToSet(std::vector<std::string> &initialVector, std::set<std::string> &destinationSet);
 void storeLine(std::string &line, std::vector<std::string> &words, std::set<std::string> &setToStore);
 
@@ -29,17 +31,25 @@ class Automaton {
     std::set<int> acceptanceStates;  // Cjto de estados de aceptación
     std::set<std::string> stackAlphabet;  // Alfabeto de la pila
     std::string initialStackSymbol;  // Símbolo inicial de la pila
+    
+    bool trace; // Atributo que indica si estamos en modo traza o no
+
+    /* Método que comprueba si el autómata está correctamente definido */
+    bool checkAutomaton(void);
+    /* Método que comprueba si las transiciones del autómata son correctas */
+    bool checkTransitions(void);
+    /* Método recursivo para realizar la ejecución del autómata */
+    bool recursiveStep(std::string, std::string, std::stack<std::string>);
+    /* Método que comprueba si un estado existe en el autómata */
+    bool existState(std::string); 
 
   public:
-    Automaton(char* automatonFile);
+    Automaton(char* automatonFile, int mode);
     ~Automaton();
 
-    bool existState(std::string);
+    /* Método que comprueba si una cadena es reconocida por el autómata*/
     bool test(std::string);
-    bool checkAutomaton(void);
-    bool checkTransitions(void);
-
-    bool recursiveStep(std::string, std::string, std::stack<std::string>);
+    /* Método de impresión*/
     std::ostream& write(std::ostream& os);
 };
 

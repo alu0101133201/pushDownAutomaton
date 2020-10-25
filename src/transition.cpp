@@ -20,7 +20,8 @@ void getWords(std::string initialString, std::vector<std::string> &words) {
 }
 
 Transition::Transition(std::string iniSt, std::string consSymb, std::string consStackSymb,
-        std::string nextSt, std::vector<std::string> insertStackSymb) :
+        std::string nextSt, std::vector<std::string> insertStackSymb, int localId) :
+    id(localId),   
     initialState(iniSt), 
     consumeSymbol(consSymb), 
     consumeStackSymbol(consStackSymb), 
@@ -28,6 +29,10 @@ Transition::Transition(std::string iniSt, std::string consSymb, std::string cons
     insertStackSymbol(insertStackSymb) {}
 
 Transition::~Transition() {}
+
+int Transition::getID(void) const {
+  return id;
+}
 
 std::string Transition::getInitialState(void) const {
   return initialState;
@@ -62,6 +67,7 @@ std::ostream& Transition::write(std::ostream &os) {
     for (size_t i = 0; i < insertStackSymbol.size(); i++) {
       os << insertStackSymbol[i] << " ";
     }
+    os << "  id: " << id;
     os << "\n";
   return os;
 }
