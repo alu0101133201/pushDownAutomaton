@@ -8,7 +8,10 @@ es por vaciado de pila.
 
 Definición  
 ```  
-Un autómata con pila, autómata a pila o autómata de pila es un modelo matemático de un sistema que recibe una cadena constituida por símbolos de un alfabeto y determina si esa cadena pertenece al lenguaje que el autómata reconoce. El lenguaje que reconoce un autómata con pila pertenece al grupo de los lenguajes libres de contexto en la clasificación de la Jerarquía de Chomsky.
+Un autómata con pila, autómata a pila o autómata de pila es un modelo matemático de un sistema  
+que recibe una cadena constituida por símbolos de un alfabeto y determina si esa cadena pertenece  
+al lenguaje que el autómata reconoce. El lenguaje que reconoce un autómata con pila pertenece al  
+grupo de los lenguajes libres de contexto en la clasificación de la Jerarquía de Chomsky.
 ```  
   
 La implementación se ha realizado en el lenguaje C++.  
